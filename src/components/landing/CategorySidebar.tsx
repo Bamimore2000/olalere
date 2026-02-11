@@ -1,7 +1,7 @@
 'use client';
 
 import Link from "next/link";
-import { motion } from "framer-motion";
+import { motion, Variants } from "framer-motion";
 import {
     Gem,
     Diamond,
@@ -13,7 +13,7 @@ import {
     Flame
 } from "lucide-react";
 
-const sidebarVariants = {
+const sidebarVariants: Variants = {
     hidden: {
         opacity: 0,
         x: -120,
@@ -32,7 +32,7 @@ const sidebarVariants = {
     }
 };
 
-const itemVariants = {
+const itemVariants: Variants = {
     hidden: { opacity: 0, x: -20 },
     visible: {
         opacity: 1,

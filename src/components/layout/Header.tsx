@@ -5,7 +5,7 @@ import { Search, User, Menu, Zap, Flame, Gem, Diamond, Circle, Watch, Gift, Cloc
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { CartSheet } from "@/components/cart/cart-sheet";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence, Variants } from "framer-motion";
 
 const categories = [
     { name: "Daily Deals", icon: Zap, href: "/shop?sort=deals" },
@@ -18,7 +18,7 @@ const categories = [
     { name: "New Arrivals", icon: Clock, href: "/shop?sort=new" },
 ];
 
-const mobileMenuVariants = {
+const mobileMenuVariants: Variants = {
     hidden: { opacity: 0, x: -100 },
     visible: {
         opacity: 1,
@@ -32,7 +32,7 @@ const mobileMenuVariants = {
     }
 };
 
-const itemVariants = {
+const itemVariants: Variants = {
     hidden: { opacity: 0, x: -25, scale: 0.98 },
     visible: {
         opacity: 1,

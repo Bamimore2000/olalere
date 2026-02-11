@@ -8,6 +8,9 @@ export type CartItem = {
     image?: string;
     images?: string[];
     quantity: number;
+    category?: string;
+    stock?: number;
+    slug?: string;
 };
 
 interface CartState {
@@ -15,7 +18,7 @@ interface CartState {
     isOpen: boolean;
     onOpen: () => void;
     onClose: () => void;
-    addItem: (data: CartItem) => void;
+    addItem: (data: Omit<CartItem, "quantity"> & { quantity?: number }) => void;
     removeItem: (id: string) => void;
     clearCart: () => void;
 }
@@ -27,7 +30,7 @@ export const useCart = create(
             isOpen: false,
             onOpen: () => set({ isOpen: true }),
             onClose: () => set({ isOpen: false }),
-            addItem: (data: CartItem) => {
+            addItem: (data: Omit<CartItem, "quantity"> & { quantity?: number }) => {
                 const currentItems = get().items;
                 const existingItem = currentItems.find((item) => item.id === data.id);
 
@@ -43,7 +46,7 @@ export const useCart = create(
                     return;
                 }
 
-                set({ items: [...get().items, { ...data, quantity: 1 }] });
+                set({ items: [...get().items, { ...data, quantity: data.quantity || 1 }] });
             },
             removeItem: (id: string) => {
                 set({ items: [...get().items.filter((item) => item.id !== id)] });

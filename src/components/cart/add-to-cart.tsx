@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { useCart, CartItem } from "@/hooks/use-cart";
 
 interface AddToCartProps {
-    product: CartItem;
+    product: Omit<CartItem, "quantity"> & { quantity?: number };
     className?: string;
 }
 
