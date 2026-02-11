@@ -5,6 +5,7 @@ import { notFound } from "next/navigation";
 import Link from "next/link";
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import { formatPrice } from "@/lib/utils";
+import { SafeImage } from "@/components/ui/safe-image";
 
 // Generate Metadata for SEO
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }) {
@@ -50,9 +51,10 @@ export default async function CategoryPage({ params }: { params: Promise<{ slug:
                         <Card className="border-none shadow-none rounded-none overflow-hidden bg-transparent">
                             <CardContent className="p-0 relative aspect-square bg-secondary/20">
                                 <div className="relative w-full h-full overflow-hidden">
-                                    <img
+                                    <SafeImage
                                         src={product.images[0]}
                                         alt={product.name}
+                                        fill
                                         className="object-cover w-full h-full transition-transform duration-700 group-hover:scale-105"
                                     />
                                 </div>

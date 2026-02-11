@@ -8,7 +8,7 @@ import { formatPrice } from "@/lib/utils";
 import { Badge } from "@/components/ui/badge";
 import { ChevronLeft, ShieldCheck, Truck, RefreshCcw } from "lucide-react";
 import Link from "next/link";
-import { Button } from "@/components/ui/button";
+import { SafeImage } from "@/components/ui/safe-image";
 
 export default async function ProductPage({
     params,
@@ -55,7 +55,7 @@ export default async function ProductPage({
                     {/* Image Gallery */}
                     <div className="space-y-4">
                         <div className="aspect-square relative overflow-hidden bg-zinc-50 rounded-sm border border-zinc-100 group">
-                            <Image
+                            <SafeImage
                                 src={finalProduct.images[0]}
                                 alt={finalProduct.name}
                                 fill

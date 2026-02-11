@@ -5,10 +5,9 @@ import { Product } from "@/db/schema";
 import NextImage from "next/image";
 import { Button } from "@/components/ui/button";
 import { AddToCart } from "@/components/cart/add-to-cart";
+import { SafeImage } from "@/components/ui/safe-image";
 import { ChevronRight } from "lucide-react";
 import { formatPrice } from "@/lib/utils";
-import { useState } from "react";
-import { ImagePlaceholder } from "@/components/ui/image-placeholder";
 
 interface ProductCategorySectionProps {
     title: string;
@@ -46,23 +45,16 @@ export function ProductCategorySection({ title, category, products }: ProductCat
 }
 
 function ProductCard({ product }: { product: any }) {
-    const [hasError, setHasError] = useState(false);
-
     return (
         <div className="bg-white p-1.5 flex flex-col group relative border-r border-b last:border-r-0 lg:[&:nth-child(4)]:border-r-0 transition-all duration-300 hover:shadow-xl hover:z-10 text-zinc-900">
             <Link href={`/product/${product.slug || product.id}`} className="block aspect-square relative overflow-hidden mb-4 bg-zinc-50 rounded-sm">
-                {!hasError ? (
-                    <NextImage
-                        src={product.images[0]}
-                        alt={product.name}
-                        fill
-                        className="object-cover transition-transform duration-500 group-hover:scale-105"
-                        sizes="(max-width: 768px) 50vw, 25vw"
-                        onError={() => setHasError(true)}
-                    />
-                ) : (
-                    <ImagePlaceholder name={product.name} />
-                )}
+                <SafeImage
+                    src={product.images[0]}
+                    alt={product.name}
+                    fill
+                    className="object-cover transition-transform duration-500 group-hover:scale-105"
+                    sizes="(max-width: 768px) 50vw, 25vw"
+                />
                 {product.stock < 5 && product.stock > 0 && (
                     <span className="absolute top-2 left-2 bg-amber-500 text-white text-[10px] font-bold px-1.5 py-0.5 rounded-sm z-10">
                         LOW STOCK

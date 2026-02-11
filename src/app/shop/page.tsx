@@ -3,6 +3,7 @@ import { db } from "@/db";
 import { products as productsTable } from "@/db/schema";
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import { formatPrice } from "@/lib/utils";
+import { SafeImage } from "@/components/ui/safe-image";
 
 export const metadata = {
     title: "Shop All | Borokini",
@@ -30,9 +31,10 @@ export default async function ShopPage() {
                             <CardContent className="p-0 relative aspect-square bg-secondary/20">
                                 {/* Image Container with Hover Effect */}
                                 <div className="relative w-full h-full overflow-hidden">
-                                    <img
+                                    <SafeImage
                                         src={product.images[0]}
                                         alt={product.name}
+                                        fill
                                         className="object-cover w-full h-full transition-transform duration-700 group-hover:scale-105"
                                     />
                                 </div>
