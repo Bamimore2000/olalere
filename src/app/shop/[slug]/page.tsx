@@ -1,117 +1,86 @@
-import { Suspense } from "react";
+import { db } from "@/db";
+import { products as productsTable } from "@/db/schema";
+import { eq } from "drizzle-orm";
 import { notFound } from "next/navigation";
-import { mockProducts } from "@/lib/mock-data";
-import { AddToCart } from "@/components/cart/add-to-cart";
-import { Separator } from "@/components/ui/separator";
-import {
-    Accordion,
-    AccordionContent,
-    AccordionItem,
-    AccordionTrigger,
-} from "@/components/ui/accordion";
 import Link from "next/link";
-import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardFooter } from "@/components/ui/card";
+import { formatPrice } from "@/lib/utils";
 
 // Generate Metadata for SEO
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }) {
     const { slug } = await params;
-    const product = mockProducts.find((p) => p.slug === slug);
-
-    if (!product) {
-        return {
-            title: "Product Not Found | Borokini",
-        };
-    }
+    const categoryName = slug.charAt(0).toUpperCase() + slug.slice(1);
 
     return {
-        title: `${product.name} | Borokini Luxury`,
-        description: product.description,
-        openGraph: {
-            images: [product.images[0]],
-        },
+        title: `${categoryName} | Borokini Luxury`,
+        description: `Explore our exclusive collection of ${slug}.`,
     };
 }
 
-// Product Details Component
-export default async function ProductPage({ params }: { params: Promise<{ slug: string }> }) {
+export default async function CategoryPage({ params }: { params: Promise<{ slug: string }> }) {
     const { slug } = await params;
-    const product = mockProducts.find((p) => p.slug === slug);
 
-    if (!product) {
-        notFound();
+    const products = await db.select().from(productsTable).where(eq(productsTable.category, slug));
+
+    if (products.length === 0) {
+        // If no products found for this category, it might be an invalid category or just empty
+        // For known categories, we might want to show an empty state, but for now notFound is fine if it's completely unknown
+        const knownCategories = ['necklaces', 'rings', 'earrings', 'watches', 'gifts'];
+        if (!knownCategories.includes(slug)) {
+            notFound();
+        }
     }
 
+    const categoryName = slug.charAt(0).toUpperCase() + slug.slice(1);
+
     return (
-        <div className="container mx-auto px-4 py-12 md:px-6 lg:py-20">
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20">
-
-                {/* Gallery Section */}
-                <div className="space-y-4">
-                    <div className="aspect-square relative overflow-hidden bg-secondary/20">
-                        <img
-                            src={product.images[0]}
-                            alt={product.name}
-                            className="object-cover w-full h-full"
-                        />
-                    </div>
-                </div>
-
-                {/* Details Section */}
-                <div className="flex flex-col space-y-8 sticky top-24 h-fit">
-                    <div className="space-y-2">
-                        <div className="flex flex-col gap-1">
-                            <span className="text-sm uppercase tracking-widest text-muted-foreground">
-                                {product.category}
-                            </span>
-                            {/* Collections & Tags Display */}
-                            <div className="flex flex-wrap gap-2 text-[10px] uppercase tracking-wider text-muted-foreground/80">
-                                {product.collections.map(c => <span key={c} className="border px-1.5 py-0.5">{c}</span>)}
-                            </div>
-                        </div>
-                        <h1 className="font-serif text-3xl md:text-5xl font-medium tracking-tight">
-                            {product.name}
-                        </h1>
-                        <p className="text-2xl font-medium text-foreground">
-                            ${product.price.toFixed(2)}
-                        </p>
-                    </div>
-
-                    <Separator />
-
-                    <p className="text-muted-foreground leading-relaxed text-lg font-light">
-                        {product.description}
-                    </p>
-
-                    <div className="space-y-4 pt-4">
-                        <AddToCart product={{
-                            id: product.id,
-                            name: product.name,
-                            price: product.price,
-                            quantity: 1
-                        }} />
-                        <p className="text-xs text-muted-foreground text-center w-[180px]">
-                            Free shipping on all orders.
-                        </p>
-                    </div>
-
-                    <div className="pt-8 w-full max-w-md">
-                        <Accordion type="single" collapsible className="w-full">
-                            <AccordionItem value="item-1">
-                                <AccordionTrigger className="text-sm uppercase tracking-wider font-medium">Materials & Care</AccordionTrigger>
-                                <AccordionContent className="text-muted-foreground">
-                                    Crafted from premium {product.material}. To maintain its shine, gently wipe with a soft cloth and store in the provided jewelry box when not in use. Avoid contact with harsh chemicals or perfumes.
-                                </AccordionContent>
-                            </AccordionItem>
-                            <AccordionItem value="item-2">
-                                <AccordionTrigger className="text-sm uppercase tracking-wider font-medium">Shipping & Returns</AccordionTrigger>
-                                <AccordionContent className="text-muted-foreground">
-                                    We offer complimentary insured shipping on all orders. Returns are accepted within 30 days of delivery, provided the item is unworn and in its original packaging.
-                                </AccordionContent>
-                            </AccordionItem>
-                        </Accordion>
-                    </div>
-                </div>
+        <div className="container mx-auto px-4 py-16 md:px-6">
+            <div className="flex flex-col items-center justify-center space-y-4 text-center mb-16">
+                <h1 className="font-serif text-3xl md:text-5xl font-medium tracking-tight">
+                    {categoryName}
+                </h1>
+                <p className="max-w-[700px] text-muted-foreground md:text-lg">
+                    Exquisite {slug} curated for timeless elegance.
+                </p>
             </div>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
+                {products.map((product) => (
+                    <Link key={product.id} href={`/product/${product.slug}`} className="group">
+                        <Card className="border-none shadow-none rounded-none overflow-hidden bg-transparent">
+                            <CardContent className="p-0 relative aspect-square bg-secondary/20">
+                                <div className="relative w-full h-full overflow-hidden">
+                                    <img
+                                        src={product.images[0]}
+                                        alt={product.name}
+                                        className="object-cover w-full h-full transition-transform duration-700 group-hover:scale-105"
+                                    />
+                                </div>
+                            </CardContent>
+                            <CardFooter className="flex flex-col items-start p-4 space-y-1">
+                                <span className="text-xs uppercase tracking-widest text-muted-foreground">
+                                    {product.category}
+                                </span>
+                                <h3 className="font-serif text-lg font-medium group-hover:text-primary transition-colors">
+                                    {product.name}
+                                </h3>
+                                <p className="text-sm font-medium text-foreground">
+                                    {formatPrice(product.price)}
+                                </p>
+                            </CardFooter>
+                        </Card>
+                    </Link>
+                ))}
+            </div>
+
+            {products.length === 0 && (
+                <div className="text-center py-20">
+                    <p className="text-muted-foreground">No products found in this category.</p>
+                    <Link href="/shop" className="text-primary hover:underline mt-4 inline-block">
+                        Browse all collections
+                    </Link>
+                </div>
+            )}
         </div>
     );
 }

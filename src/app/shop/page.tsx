@@ -1,15 +1,17 @@
 import Link from "next/link";
-import Image from "next/image";
-import { mockProducts } from "@/lib/mock-data";
+import { db } from "@/db";
+import { products as productsTable } from "@/db/schema";
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
+import { formatPrice } from "@/lib/utils";
 
 export const metadata = {
     title: "Shop All | Borokini",
     description: "Explore our complete collection of luxury jewelry.",
 };
 
-export default function ShopPage() {
+export default async function ShopPage() {
+    const allProducts = await db.select().from(productsTable);
+
     return (
         <div className="container mx-auto px-4 py-16 md:px-6">
             <div className="flex flex-col items-center justify-center space-y-4 text-center mb-16">
@@ -22,8 +24,8 @@ export default function ShopPage() {
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
-                {mockProducts.map((product) => (
-                    <Link key={product.id} href={`/shop/${product.slug}`} className="group">
+                {allProducts.map((product) => (
+                    <Link key={product.id} href={`/product/${product.slug}`} className="group">
                         <Card className="border-none shadow-none rounded-none overflow-hidden bg-transparent">
                             <CardContent className="p-0 relative aspect-square bg-secondary/20">
                                 {/* Image Container with Hover Effect */}
@@ -43,7 +45,7 @@ export default function ShopPage() {
                                     {product.name}
                                 </h3>
                                 <p className="text-sm font-medium text-foreground">
-                                    ${product.price.toFixed(2)}
+                                    {formatPrice(product.price)}
                                 </p>
                             </CardFooter>
                         </Card>
