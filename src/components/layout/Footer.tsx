@@ -67,7 +67,7 @@ export function Footer() {
                             <ul className="space-y-4 text-[11px] font-bold text-zinc-400 uppercase tracking-widest">
                                 <li><Link href="/shop" className="hover:text-zinc-900 transition-colors">Shop All</Link></li>
                                 <li><Link href="/editorials" className="hover:text-zinc-900 transition-colors">Stories</Link></li>
-                                <li><Link href="/shop?collection=all" className="hover:text-zinc-900 transition-colors">Collections</Link></li>
+                                <li><Link href="/collections" className="hover:text-zinc-900 transition-colors">Collections</Link></li>
                                 <li><Link href="/about" className="hover:text-zinc-900 transition-colors">About Us</Link></li>
                             </ul>
                         </div>

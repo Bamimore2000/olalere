@@ -7,9 +7,21 @@ import { Metadata } from "next";
 
 export async function generateMetadata({ params }: { params: Promise<{ id: string }> }): Promise<Metadata> {
     const { id } = await params;
-    const product = await db.query.products.findFirst({
-        where: or(eq(products.slug, id), eq(products.id, id))
+    // Try slug lookup first
+    let product = await db.query.products.findFirst({
+        where: eq(products.slug, id)
     });
+
+    // Fallback to ID lookup only if id looks like a UUID
+    if (!product && id.length === 36) {
+        try {
+            product = await db.query.products.findFirst({
+                where: eq(products.id, id)
+            });
+        } catch (e) {
+            // Ignore UUID format errors
+        }
+    }
 
     if (!product) return { title: "Product Not Found" };
 
@@ -31,20 +43,20 @@ export default async function ProductPage({
 }) {
     const { id } = await params;
 
-    const product = await db.query.products.findFirst({
-        where: or(
-            eq(products.slug, id),
-        ),
+    // Try slug lookup
+    let finalProduct = await db.query.products.findFirst({
+        where: eq(products.slug, id),
     });
 
-    // If slug lookup fails, try UUID lookup 
-    let finalProduct = product;
-    if (!finalProduct) {
+    // Fallback to ID lookup only if id looks like a UUID
+    if (!finalProduct && id.length === 36) {
         try {
             finalProduct = await db.query.products.findFirst({
                 where: eq(products.id, id),
             });
-        } catch (e) { }
+        } catch (e) {
+            // Ignore UUID format errors
+        }
     }
 
     if (!finalProduct) {

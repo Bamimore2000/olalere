@@ -100,6 +100,17 @@ export function Header() {
                                         </motion.div>
                                     ))}
 
+                                    <motion.div variants={itemVariants} className="mt-2 border-t pt-2">
+                                        <Link
+                                            href="/collections"
+                                            className="flex items-center gap-3 px-4 py-3 text-sm font-medium hover:bg-secondary/50 hover:text-primary transition-colors rounded-md group"
+                                            onClick={() => setOpen(false)}
+                                        >
+                                            <Zap className="w-4 h-4 text-zinc-400 group-hover:text-primary" />
+                                            Browse Collections
+                                        </Link>
+                                    </motion.div>
+
                                     <div className="my-4 border-t pt-4">
                                         <p className="px-4 text-[10px] uppercase tracking-widest font-bold text-zinc-400 mb-2">Account</p>
                                         <motion.div variants={itemVariants}>
@@ -132,11 +143,8 @@ export function Header() {
                         <img
                             src="/logo.svg"
                             alt="Borokini Luxury Jewelry"
-                            className="h-8 w-auto"
+                            className="h-10 w-auto"
                         />
-                        <span className="hidden sm:block font-serif text-2xl font-bold tracking-[0.2em] text-zinc-900">
-                            BOROKINI
-                        </span>
                     </Link>
                 </div>
 
@@ -148,7 +156,7 @@ export function Header() {
                     <Link href="/editorials" className="hover:text-zinc-900 transition-colors">
                         Stories
                     </Link>
-                    <Link href="/shop?collection=all" className="hover:text-zinc-900 transition-colors">
+                    <Link href="/collections" className="hover:text-zinc-900 transition-colors">
                         Collections
                     </Link>
                 </nav>

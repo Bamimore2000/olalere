@@ -9,6 +9,9 @@ export const metadata = {
     description: "Browse our exclusive jewelry collections.",
 };
 
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
+
 export default async function CollectionsPage() {
     // Fetch all collections
     const allCollections = await db.query.collections.findMany();
