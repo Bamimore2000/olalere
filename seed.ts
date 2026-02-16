@@ -18,7 +18,9 @@ const main = async () => {
             images: ["https://images.unsplash.com/photo-1599643478518-17488fbbcd75?q=80&w=2000&auto=format&fit=crop"],
             category: "necklaces",
             material: "Gold",
-            stock: 10
+            sku: "BOR-NK-001",
+            stock: 10,
+            sizeStock: { "ONE SIZE": 10 }
         },
         {
             slug: "n2",
@@ -28,7 +30,9 @@ const main = async () => {
             images: ["https://images.unsplash.com/photo-1611085583191-a3b134066206?q=80&w=2000&auto=format&fit=crop"],
             category: "necklaces",
             material: "Emerald",
-            stock: 3
+            sku: "BOR-NK-002",
+            stock: 3,
+            sizeStock: { "ONE SIZE": 3 }
         },
         {
             slug: "n3",
@@ -38,7 +42,9 @@ const main = async () => {
             images: ["https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?q=80&w=2000&auto=format&fit=crop"],
             category: "necklaces",
             material: "Gold",
-            stock: 5
+            sku: "BOR-NK-003",
+            stock: 5,
+            sizeStock: { "ONE SIZE": 5 }
         },
         {
             slug: "n4",
@@ -48,7 +54,9 @@ const main = async () => {
             images: ["https://images.unsplash.com/photo-1573408301185-9146fe634ad0?q=80&w=2000&auto=format&fit=crop"],
             category: "necklaces",
             material: "Rose Gold",
-            stock: 12
+            sku: "BOR-NK-004",
+            stock: 12,
+            sizeStock: { "ONE SIZE": 12 }
         },
         // Earrings
         {
@@ -59,7 +67,9 @@ const main = async () => {
             images: ["https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?q=80&w=2000&auto=format&fit=crop"],
             category: "earrings",
             material: "Diamond",
-            stock: 2
+            sku: "BOR-ER-001",
+            stock: 2,
+            sizeStock: { "ONE SIZE": 2 }
         },
         {
             slug: "e2",
@@ -69,7 +79,9 @@ const main = async () => {
             images: ["https://images.unsplash.com/photo-1629227357427-bc30e380620f?q=80&w=2000&auto=format&fit=crop"],
             category: "earrings",
             material: "Pearl",
-            stock: 8
+            sku: "BOR-ER-002",
+            stock: 8,
+            sizeStock: { "ONE SIZE": 8 }
         },
         {
             slug: "e3",
@@ -79,7 +91,9 @@ const main = async () => {
             images: ["https://images.unsplash.com/photo-1635767798638-3e25273a8236?q=80&w=2000&auto=format&fit=crop"],
             category: "earrings",
             material: "Sapphire",
-            stock: 4
+            sku: "BOR-ER-003",
+            stock: 4,
+            sizeStock: { "ONE SIZE": 4 }
         },
         {
             slug: "e4",
@@ -89,7 +103,9 @@ const main = async () => {
             images: ["https://images.unsplash.com/photo-1630019314274-9549ff63b216?q=80&w=2000&auto=format&fit=crop"],
             category: "earrings",
             material: "Gold",
-            stock: 15
+            sku: "BOR-ER-004",
+            stock: 15,
+            sizeStock: { "ONE SIZE": 15 }
         },
         // Rings
         {
@@ -100,7 +116,9 @@ const main = async () => {
             images: ["https://images.unsplash.com/photo-1605100804763-247f67b3557e?q=80&w=2000&auto=format&fit=crop"],
             category: "rings",
             material: "Gold",
-            stock: 15
+            sku: "BOR-RG-001",
+            stock: 15,
+            sizeStock: { "M": 5, "L": 10 }
         },
         {
             slug: "r2",
@@ -110,7 +128,9 @@ const main = async () => {
             images: ["https://images.unsplash.com/photo-1603912627214-904602bb0471?q=80&w=2000&auto=format&fit=crop"],
             category: "rings",
             material: "Platinum",
-            stock: 1
+            sku: "BOR-RG-002",
+            stock: 1,
+            sizeStock: { "L": 1 }
         },
         {
             slug: "r3",
@@ -120,7 +140,9 @@ const main = async () => {
             images: ["https://images.unsplash.com/photo-1589128777073-263566ae172d?q=80&w=2000&auto=format&fit=crop"],
             category: "rings",
             material: "Ruby",
-            stock: 3
+            sku: "BOR-RG-003",
+            stock: 3,
+            sizeStock: { "M": 3 }
         },
         {
             slug: "r4",
@@ -130,7 +152,9 @@ const main = async () => {
             images: ["https://images.unsplash.com/photo-1598560912005-597659bc7aa0?q=80&w=2000&auto=format&fit=crop"],
             category: "rings",
             material: "Gold",
-            stock: 6
+            sku: "BOR-RG-004",
+            stock: 6,
+            sizeStock: { "S": 3, "M": 3 }
         },
     ];
 
@@ -139,7 +163,7 @@ const main = async () => {
         await db.delete(products);
 
         console.log("Inserting fresh luxury products...");
-        await db.insert(products).values(initialProducts);
+        await db.insert(products).values(initialProducts as any);
         console.log("Seeding complete!");
     } catch (error) {
         console.error("Seeding failed during database operations:", error);

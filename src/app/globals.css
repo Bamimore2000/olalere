@@ -102,9 +102,9 @@
     --popover: 0 0% 100%;
     --popover-foreground: 222 47% 11%;
 
-    /* Luxury Gold Accent */
-    --primary: 43 74% 49%;
-    /* Golden Ochre */
+    /* Borokini Premium Gold */
+    --primary: 43 70% 45%;
+    /* Rich Deep Gold */
     --primary-foreground: 210 40% 98%;
 
     --secondary: 210 40% 96.1%;
@@ -143,8 +143,8 @@
     --popover: 222 47% 5%;
     --popover-foreground: 210 40% 98%;
 
-    --primary: 43 74% 49%;
-    /* Gold */
+    --primary: 43 70% 50%;
+    /* Brightened Gold for Dark Mode */
     --primary-foreground: 222.2 47.4% 11.2%;
 
     --secondary: 217.2 32.6% 17.5%;
@@ -185,7 +185,8 @@
   h3,
   h4,
   h5,
-  h6 {
+  h6,
+  .font-serif {
     @apply font-serif;
   }
 }

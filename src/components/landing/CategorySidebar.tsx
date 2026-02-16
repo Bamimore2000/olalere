@@ -12,34 +12,38 @@ import {
     Clock,
     Flame
 } from "lucide-react";
+import { useState, useEffect } from 'react';
 
 const sidebarVariants: Variants = {
     hidden: {
         opacity: 0,
-        x: -120,
-        filter: "blur(4px)"
+        x: -150,
+        filter: "blur(20px)"
     },
     visible: {
         opacity: 1,
         x: 0,
         filter: "blur(0px)",
         transition: {
-            duration: 0.8,
-            ease: [0.16, 1, 0.3, 1],
+            type: "spring",
+            damping: 25,
+            stiffness: 120,
             staggerChildren: 0.1,
-            delayChildren: 0.1
+            delayChildren: 0.3
         }
     }
 };
 
 const itemVariants: Variants = {
-    hidden: { opacity: 0, x: -20 },
+    hidden: { opacity: 0, x: -50, filter: "blur(8px)" },
     visible: {
         opacity: 1,
         x: 0,
+        filter: "blur(0px)",
         transition: {
-            duration: 0.5,
-            ease: [0.16, 1, 0.3, 1]
+            type: "spring",
+            damping: 20,
+            stiffness: 100
         }
     }
 };
@@ -56,9 +60,14 @@ const categories = [
 ];
 
 export function CategorySidebar() {
+    const [mounted, setMounted] = useState(false);
+    useEffect(() => setMounted(true), []);
+
+    if (!mounted) return <aside className="hidden lg:block w-64 shrink-0 bg-zinc-50 border-r border-zinc-100" />;
+
     return (
         <motion.aside
-            className="hidden lg:block w-64 shrink-0 bg-white border rounded-sm overflow-hidden shadow-sm self-start"
+            className="hidden lg:block w-64 shrink-0 bg-white border border-zinc-100 rounded-none overflow-hidden self-start sticky top-24"
             variants={sidebarVariants}
             initial="hidden"
             animate="visible"

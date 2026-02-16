@@ -1,6 +1,6 @@
 "use client";
 
-import { ShoppingBag, Trash2 } from "lucide-react";
+import { ShoppingBag, Trash2, Plus, Minus } from "lucide-react";
 import { useCart } from "@/hooks/use-cart";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
@@ -71,33 +71,61 @@ export function CartSheet() {
                         <ScrollArea className="flex-1 px-4">
                             <ul className="space-y-4">
                                 {cart.items.map((item) => (
-                                    <li key={item.id} className="flex py-2">
-                                        <div className="relative h-24 w-24 overflow-hidden rounded-md border border-gray-200">
+                                    <li key={`${item.id}-${item.selectedSize}`} className="flex py-4 group">
+                                        <div className="relative h-28 w-24 overflow-hidden rounded-none border border-zinc-100 bg-zinc-50">
                                             <Image
                                                 src={item.images?.[0] || item.image || '/placeholder.png'}
                                                 alt={item.name}
                                                 fill
-                                                className="object-cover object-center"
+                                                className="object-cover object-center transition-transform duration-500 group-hover:scale-110"
                                             />
                                         </div>
-                                        <div className="ml-4 flex flex-1 flex-col">
+                                        <div className="ml-4 flex flex-1 flex-col justify-between">
                                             <div>
-                                                <div className="flex justify-between text-base font-medium text-foreground">
-                                                    <h3>{item.name}</h3>
-                                                    <p className="ml-4">{formatPrice(item.price)}</p>
+                                                <div className="flex justify-between text-sm font-bold text-zinc-900 uppercase tracking-tighter">
+                                                    <h3 className="line-clamp-1">{item.name}</h3>
+                                                    <p className="ml-4 font-serif">{formatPrice(item.price)}</p>
+                                                </div>
+                                                <div className="mt-1 flex items-center gap-2">
+                                                    {item.selectedSize && (
+                                                        <span className="inline-flex items-center rounded-none border border-zinc-200 bg-white px-1.5 py-0.5 text-[9px] font-bold uppercase tracking-widest text-zinc-500">
+                                                            Size: {item.selectedSize}
+                                                        </span>
+                                                    )}
+                                                    <span className="text-[9px] font-bold text-zinc-300 uppercase tracking-widest">{item.category}</span>
                                                 </div>
                                             </div>
-                                            <div className="flex flex-1 items-end justify-between text-sm">
-                                                <p className="text-muted-foreground">Qty {item.quantity}</p>
+                                            <div className="flex items-center justify-between text-sm">
+                                                <div className="flex items-center border border-zinc-200 rounded-none bg-white">
+                                                    <Button
+                                                        variant="ghost"
+                                                        size="icon"
+                                                        className="h-7 w-7 rounded-none border-r border-zinc-100 hover:bg-zinc-50"
+                                                        onClick={() => cart.decreaseQuantity(item.id, item.selectedSize)}
+                                                    >
+                                                        <Minus className="h-3 w-3" />
+                                                    </Button>
+                                                    <span className="w-8 text-center text-[10px] font-bold uppercase tracking-widest text-zinc-900">
+                                                        {item.quantity}
+                                                    </span>
+                                                    <Button
+                                                        variant="ghost"
+                                                        size="icon"
+                                                        className="h-7 w-7 rounded-none border-l border-zinc-100 hover:bg-zinc-50"
+                                                        onClick={() => cart.increaseQuantity(item.id, item.selectedSize)}
+                                                    >
+                                                        <Plus className="h-3 w-3" />
+                                                    </Button>
+                                                </div>
 
                                                 <div className="flex">
                                                     <Button
                                                         variant="ghost"
                                                         size="sm"
-                                                        className="text-destructive hover:text-destructive/90"
-                                                        onClick={() => cart.removeItem(item.id)}
+                                                        className="text-[10px] font-bold uppercase tracking-widest text-zinc-400 hover:text-red-500 transition-colors"
+                                                        onClick={() => cart.removeItem(item.id, item.selectedSize)}
                                                     >
-                                                        <Trash2 className="h-4 w-4 mr-1" />
+                                                        <Trash2 className="h-3.5 w-3.5 mr-1" />
                                                         Remove
                                                     </Button>
                                                 </div>
@@ -117,7 +145,14 @@ export function CartSheet() {
                                     Shipping and taxes calculated at checkout.
                                 </p>
                             </div>
-                            <Button className="w-full uppercase tracking-widest font-bold h-12 text-sm" size="lg">
+                            <Button
+                                className="w-full uppercase tracking-widest font-bold h-12 text-sm"
+                                size="lg"
+                                onClick={() => {
+                                    alert("Proceeding to checkout...");
+                                    // In a real app, this would redirect to /checkout
+                                }}
+                            >
                                 Checkout
                             </Button>
                         </div>

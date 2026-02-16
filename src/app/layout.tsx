@@ -49,9 +49,42 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "name": "Borokini",
+    "url": "https://www.borokini.com",
+    "potentialAction": {
+      "@type": "SearchAction",
+      "target": "https://www.borokini.com/shop?q={search_term_string}",
+      "query-input": "required name=search_term_string"
+    }
+  };
+
+  const orgJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "name": "Borokini",
+    "url": "https://www.borokini.com",
+    "logo": "https://www.borokini.com/logo.svg",
+    "sameAs": [
+      "https://www.instagram.com/borokini"
+    ]
+  };
+
   return (
     <ClerkProvider>
       <html lang="en" className={`${inter.variable} ${cinzel.variable}`}>
+        <head>
+          <script
+            type="application/ld+json"
+            dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+          />
+          <script
+            type="application/ld+json"
+            dangerouslySetInnerHTML={{ __html: JSON.stringify(orgJsonLd) }}
+          />
+        </head>
         <body className="antialiased min-h-screen flex flex-col">
           <Header />
           <main className="flex-1 w-full">

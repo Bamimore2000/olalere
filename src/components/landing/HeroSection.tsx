@@ -37,7 +37,7 @@ export function HeroSection() {
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.8, delay: 0.2 }}
                     >
-                        Timeless Elegance <br className="hidden md:block" /> For Every Occasion
+                        Borokini Luxury <br className="hidden md:block" /> Timeless Elegance
                     </motion.h1>
                 </div>
 

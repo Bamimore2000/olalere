@@ -7,6 +7,7 @@ import { Sheet, SheetContent, SheetTrigger, SheetClose } from "@/components/ui/s
 import { CartSheet } from "@/components/cart/cart-sheet";
 import { motion, AnimatePresence, Variants } from "framer-motion";
 import { useState } from "react";
+import { usePathname } from "next/navigation";
 
 const categories = [
     { name: "Daily Deals", icon: Zap, href: "/shop?sort=deals" },
@@ -48,6 +49,9 @@ const itemVariants: Variants = {
 
 export function Header() {
     const [open, setOpen] = useState(false);
+    const pathname = usePathname();
+
+    if (pathname?.startsWith("/admin")) return null;
 
     return (
         <header className="sticky top-0 z-50 w-full bg-white shadow-md border-b border-zinc-200">
@@ -123,26 +127,29 @@ export function Header() {
 
                 {/* Logo */}
                 <div className="flex items-center md:mr-8">
-                    <Link href="/" className="flex items-center gap-2">
+                    <Link href="/" className="flex items-center gap-3">
                         {/* eslint-disable-next-line @next/next/no-img-element */}
                         <img
                             src="/logo.svg"
                             alt="Borokini Luxury Jewelry"
                             className="h-8 w-auto"
                         />
+                        <span className="hidden sm:block font-serif text-2xl font-bold tracking-[0.2em] text-zinc-900">
+                            BOROKINI
+                        </span>
                     </Link>
                 </div>
 
                 {/* Desktop Navigation */}
-                <nav className="hidden md:flex items-center gap-8 text-sm font-medium mx-6">
-                    <Link href="/shop" className="hover:text-primary transition-colors uppercase tracking-widest font-semibold">
-                        Shop
+                <nav className="hidden md:flex items-center gap-8 text-[11px] font-bold mx-6 uppercase tracking-[0.2em] text-zinc-400">
+                    <Link href="/shop" className="hover:text-zinc-900 transition-colors">
+                        Shop All
                     </Link>
-                    <Link href="/collections" className="hover:text-primary transition-colors uppercase tracking-widest font-semibold">
+                    <Link href="/editorials" className="hover:text-zinc-900 transition-colors">
+                        Stories
+                    </Link>
+                    <Link href="/shop?collection=all" className="hover:text-zinc-900 transition-colors">
                         Collections
-                    </Link>
-                    <Link href="/about" className="hover:text-primary transition-colors uppercase tracking-widest font-semibold">
-                        About
                     </Link>
                 </nav>
 
